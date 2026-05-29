@@ -1,359 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MS Developer House - Invoice System</title>
+<meta charset="UTF-8">
+<title>MS Developer House Invoice Pro</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial;
-}
+
 body{
-    background:#f2f4f7;
-    padding:20px;
+    margin:0;
+    font-family:Poppins;
+    background:#eef2f7;
 }
-.container{
-    max-width:1200px;
-    margin:auto;
-}
+
+.container{padding:20px; max-width:1300px; margin:auto;}
+
 .card{
     background:white;
     padding:20px;
-    border-radius:12px;
+    border-radius:15px;
     margin-bottom:20px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
 }
-h1,h2{
-    margin-bottom:15px;
-}
+
+h2{color:#1a73e8}
+
 input,select,textarea{
     width:100%;
-    padding:10px;
-    margin-top:8px;
-    margin-bottom:15px;
-    border:1px solid #ccc;
-    border-radius:8px;
+    padding:12px;
+    margin:8px 0;
+    border-radius:10px;
+    border:1px solid #ddd;
+    outline:none;
 }
+
 button{
-    background:#0066ff;
+    background:#1a73e8;
     color:white;
+    padding:12px;
     border:none;
-    padding:12px 20px;
-    border-radius:8px;
+    border-radius:10px;
     cursor:pointer;
 }
-button:hover{
-    background:#004ecc;
-}
+
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:15px;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:10px;
 }
-.summary{
-    display:flex;
-    gap:20px;
-    flex-wrap:wrap;
+
+.invoice{
+    background:white;
+    padding:30px;
+    border-radius:15px;
 }
-.summary .box{
-    flex:1;
-    background:#f7f9fc;
-    padding:20px;
-    border-radius:10px;
-    text-align:center;
-}
+
 table{
     width:100%;
     border-collapse:collapse;
-    margin-top:20px;
 }
-table th,table td{
+
+th,td{
     border:1px solid #ddd;
     padding:10px;
-    text-align:left;
 }
-table th{
-    background:#0066ff;
+
+th{
+    background:#1a73e8;
     color:white;
 }
-.paid{
-    color:green;
-    font-weight:bold;
+
+.badge{
+    padding:5px 10px;
+    border-radius:20px;
+    color:white;
 }
-.unpaid{
-    color:red;
-    font-weight:bold;
-}
-.invoice{
-    background:#fff;
-    padding:20px;
-    margin-top:20px;
-    border-radius:10px;
-    border:2px dashed #999;
-}
-.hidden{
-    display:none;
-}
-.login-box{
-    max-width:400px;
-    margin:80px auto;
-}
+
+.paid{background:green;}
+.unpaid{background:red;}
+
 </style>
+
 </head>
+
 <body>
-
-<div id="loginPage" class="login-box card">
-    <h2>MS Developer House Login</h2>
-
-    <input type="email" id="loginEmail" placeholder="Email">
-    <input type="password" id="loginPass" placeholder="Password">
-
-    <button onclick="login()">Login</button>
-</div>
-
-<div id="mainPage" class="hidden">
 
 <div class="container">
 
 <div class="card">
-    <h1>MS Developer House Invoice System</h1>
 
-    <div class="summary">
-        <div class="box">
-            <h3>Total Amount</h3>
-            <h2 id="totalAmount">0 TK</h2>
-        </div>
+<h2>Create Invoice (MS Developer House)</h2>
 
-        <div class="box">
-            <h3>Total Paid</h3>
-            <h2 id="totalPaid">0 TK</h2>
-        </div>
+<div class="grid">
 
-        <div class="box">
-            <h3>Total Due</h3>
-            <h2 id="totalDue">0 TK</h2>
-        </div>
-    </div>
-</div>
+<input id="name" placeholder="Customer Name">
+<input id="phone" placeholder="Phone / Email">
 
-<div class="card">
-    <h2>Create Invoice</h2>
+<select id="service">
+<option>Website</option>
+<option>Domain</option>
+<option>Hosting</option>
+<option>SEO</option>
+<option>App Development</option>
+</select>
 
-    <div class="grid">
+<input id="total" type="number" placeholder="Total Amount">
 
-        <div>
-            <label>From Name</label>
-            <input type="text" id="fromName">
-        </div>
+<input id="paid" type="number" placeholder="Paid Amount">
 
-        <div>
-            <label>To Name</label>
-            <input type="text" id="toName">
-        </div>
+<select id="currency">
+<option value="TK">TK</option>
+<option value="USD">USD</option>
+</select>
 
-        <div>
-            <label>Service Type</label>
-            <select id="serviceType">
-                <option>Website</option>
-                <option>Domain</option>
-                <option>Hosting</option>
-                <option>SEO</option>
-                <option>Marketing</option>
-            </select>
-        </div>
+<select id="method">
+<option>bKash</option>
+<option>Nagad</option>
+<option>Rocket</option>
+<option>Bank Transfer</option>
+<option>Binance</option>
+<option>BEP20 (USDT)</option>
+<option>Cash</option>
+</select>
 
-        <div>
-            <label>Total Amount</label>
-            <input type="number" id="totalTk">
-        </div>
+<input id="txn" placeholder="Transaction ID">
 
-        <div>
-            <label>Paid Amount</label>
-            <input type="number" id="paidTk">
-        </div>
+<input id="received" placeholder="Received Number / Sender">
 
-        <div>
-            <label>Status</label>
-            <select id="status">
-                <option>Paid</option>
-                <option>Unpaid</option>
-            </select>
-        </div>
-
-    </div>
-
-    <label>Note (Domain / Hosting etc)</label>
-    <textarea id="note"></textarea>
-
-    <button onclick="createInvoice()">Create Invoice</button>
-</div>
-
-<div class="card">
-    <h2>Invoice List</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Invoice</th>
-                <th>Client</th>
-                <th>Service</th>
-                <th>Total</th>
-                <th>Paid</th>
-                <th>Due</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-
-        <tbody id="invoiceTable"></tbody>
-    </table>
-</div>
-
-<div id="invoicePreview"></div>
+<select id="status">
+<option>Paid</option>
+<option>Unpaid</option>
+</select>
 
 </div>
+
+<textarea id="note" placeholder="Note (Domain / Hosting / Details)"></textarea>
+
+<button onclick="create()">Create Invoice</button>
+
+</div>
+
+<div class="card" id="preview"></div>
+
 </div>
 
 <script>
 
-const AUTH_EMAIL = "somoycash@gmail.com";
-const AUTH_PASS = "123456";
+let invoices = JSON.parse(localStorage.getItem("inv")) || [];
 
-function login(){
+function create(){
 
-    let email = document.getElementById("loginEmail").value;
-    let pass = document.getElementById("loginPass").value;
+let data = {
+    id:"MSDH-"+Date.now(),
+    name:document.getElementById("name").value,
+    phone:document.getElementById("phone").value,
+    service:document.getElementById("service").value,
+    total:document.getElementById("total").value,
+    paid:document.getElementById("paid").value,
+    currency:document.getElementById("currency").value,
+    method:document.getElementById("method").value,
+    txn:document.getElementById("txn").value,
+    received:document.getElementById("received").value,
+    status:document.getElementById("status").value,
+    note:document.getElementById("note").value,
+    date:new Date().toLocaleString()
+};
 
-    if(email === AUTH_EMAIL && pass === AUTH_PASS){
+data.due = data.total - data.paid;
 
-        localStorage.setItem("loggedIn","yes");
+invoices.unshift(data);
 
-        document.getElementById("loginPage").classList.add("hidden");
-        document.getElementById("mainPage").classList.remove("hidden");
+localStorage.setItem("inv",JSON.stringify(invoices));
 
-        loadInvoices();
+show(data);
 
-    }else{
-        alert("Invalid Login");
-    }
 }
 
-if(localStorage.getItem("loggedIn") === "yes"){
-    document.getElementById("loginPage").classList.add("hidden");
-    document.getElementById("mainPage").classList.remove("hidden");
-    loadInvoices();
+function show(d){
+
+document.getElementById("preview").innerHTML = `
+<div id="pdf" class="invoice">
+
+<h2>MS Developer House</h2>
+<p>Invoice ID: ${d.id}</p>
+<p>Date: ${d.date}</p>
+
+<hr>
+
+<h3>Customer</h3>
+<p>${d.name}</p>
+<p>${d.phone}</p>
+
+<table>
+<tr>
+<th>Service</th>
+<th>Total</th>
+<th>Paid</th>
+<th>Due</th>
+<th>Currency</th>
+</tr>
+
+<tr>
+<td>${d.service}</td>
+<td>${d.total}</td>
+<td>${d.paid}</td>
+<td>${d.due}</td>
+<td>${d.currency}</td>
+</tr>
+
+</table>
+
+<br>
+
+<h3>Payment Info</h3>
+<p><b>Method:</b> ${d.method}</p>
+<p><b>TXN ID:</b> ${d.txn}</p>
+<p><b>Received:</b> ${d.received}</p>
+<p><b>Status:</b> <span class="badge ${d.status=='Paid'?'paid':'unpaid'}">${d.status}</span></p>
+
+<h3>Note</h3>
+<p>${d.note}</p>
+
+<h2 style="text-align:right;">Due: ${d.due} ${d.currency}</h2>
+
+</div>
+
+<br>
+
+<button onclick="download()">Download PDF</button>
+`;
+
 }
 
-let invoices = JSON.parse(localStorage.getItem("invoices")) || [];
+function download(){
 
-function createInvoice(){
+let element = document.getElementById("pdf");
 
-    let fromName = document.getElementById("fromName").value;
-    let toName = document.getElementById("toName").value;
-    let serviceType = document.getElementById("serviceType").value;
-    let totalTk = Number(document.getElementById("totalTk").value);
-    let paidTk = Number(document.getElementById("paidTk").value);
-    let status = document.getElementById("status").value;
-    let note = document.getElementById("note").value;
+html2pdf().from(element).save("invoice.pdf");
 
-    let due = totalTk - paidTk;
-
-    let invoiceNo = "INV-" + (invoices.length + 1);
-
-    let invoice = {
-        invoiceNo,
-        fromName,
-        toName,
-        serviceType,
-        totalTk,
-        paidTk,
-        due,
-        status,
-        note,
-        date:new Date().toLocaleString()
-    };
-
-    invoices.push(invoice);
-
-    localStorage.setItem("invoices", JSON.stringify(invoices));
-
-    showInvoice(invoice);
-
-    loadInvoices();
-
-    alert("Invoice Created");
-}
-
-function loadInvoices(){
-
-    let table = document.getElementById("invoiceTable");
-
-    table.innerHTML = "";
-
-    let total = 0;
-    let paid = 0;
-    let due = 0;
-
-    invoices.forEach(inv=>{
-
-        total += inv.totalTk;
-        paid += inv.paidTk;
-        due += inv.due;
-
-        table.innerHTML += `
-            <tr>
-                <td>${inv.invoiceNo}</td>
-                <td>${inv.toName}</td>
-                <td>${inv.serviceType}</td>
-                <td>${inv.totalTk} TK</td>
-                <td>${inv.paidTk} TK</td>
-                <td>${inv.due} TK</td>
-                <td class="${inv.status=='Paid'?'paid':'unpaid'}">${inv.status}</td>
-            </tr>
-        `;
-    });
-
-    document.getElementById("totalAmount").innerText = total + " TK";
-    document.getElementById("totalPaid").innerText = paid + " TK";
-    document.getElementById("totalDue").innerText = due + " TK";
-}
-
-function showInvoice(inv){
-
-    document.getElementById("invoicePreview").innerHTML = `
-        <div class="invoice">
-
-            <h2>MS Developer House</h2>
-            <hr><br>
-
-            <p><b>Invoice No:</b> ${inv.invoiceNo}</p>
-            <p><b>Date:</b> ${inv.date}</p>
-
-            <br>
-
-            <p><b>From:</b> ${inv.fromName}</p>
-            <p><b>To:</b> ${inv.toName}</p>
-
-            <br>
-
-            <p><b>Service:</b> ${inv.serviceType}</p>
-            <p><b>Total Amount:</b> ${inv.totalTk} TK</p>
-            <p><b>Paid Amount:</b> ${inv.paidTk} TK</p>
-            <p><b>Due Amount:</b> ${inv.due} TK</p>
-
-            <br>
-
-            <p><b>Status:</b> ${inv.status}</p>
-
-            <br>
-
-            <p><b>Note:</b> ${inv.note}</p>
-
-        </div>
-    `;
 }
 
 </script>
