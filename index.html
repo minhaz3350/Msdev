@@ -1,111 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>MS Developer House Invoice Pro</title>
+function download(){
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    const element = document.getElementById("pdf");
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    const opt = {
+        margin: 0.5,
+        filename: 'MS-Developer-House-Invoice.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { 
+            scale: 3,
+            useCORS: true,
+            scrollY: 0
+        },
+        jsPDF: { 
+            unit: 'in', 
+            format: 'a4', 
+            orientation: 'portrait'
+        }
+    };
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-<style>
-
-body{
-    margin:0;
-    font-family:Poppins;
-    background:#eef2f7;
-}
-
-.container{padding:20px; max-width:1300px; margin:auto;}
-
-.card{
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:20px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.08);
-}
-
-h2{color:#1a73e8}
-
-input,select,textarea{
-    width:100%;
-    padding:12px;
-    margin:8px 0;
-    border-radius:10px;
-    border:1px solid #ddd;
-    outline:none;
-}
-
-button{
-    background:#1a73e8;
-    color:white;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-}
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:10px;
-}
-
-.invoice{
-    background:white;
-    padding:30px;
-    border-radius:15px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-th,td{
-    border:1px solid #ddd;
-    padding:10px;
-}
-
-th{
-    background:#1a73e8;
-    color:white;
-}
-
-.badge{
-    padding:5px 10px;
-    border-radius:20px;
-    color:white;
-}
-
-.paid{background:green;}
-.unpaid{background:red;}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="container">
-
-<div class="card">
-
-<h2>Create Invoice (MS Developer House)</h2>
-
-<div class="grid">
-
-<input id="name" placeholder="Customer Name">
-<input id="phone" placeholder="Phone / Email">
-
-<select id="service">
-<option>Website</option>
-<option>Domain</option>
-<option>Hosting</option>
-<option>SEO</option>
+    // small delay ensures full render
+    setTimeout(() => {
+        html2pdf().set(opt).from(element).save();
+    }, 300);
+}<option>SEO</option>
 <option>App Development</option>
 </select>
 
